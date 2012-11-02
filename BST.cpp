@@ -91,6 +91,36 @@ void BST<T>::print() {
 }
 
 template <typename T>
+vector<string>* BST<T>::q(){
+
+  vector<string> * printQ = new vector<string>;
+  list< Node<T>* >* nodeQ = new list< Node<T>* >;
+  Node<T>* curr = root;
+  nodeQ->push_front(root);
+  printQ->push_back(toString(root->getValue()));
+
+  while(!nodeQ->empty()){
+    curr = nodeQ->front();
+    if(curr->getLeftChild() != 0){
+      printQ->push_back(toString(curr->getLeftChild()->getValue()));
+      nodeQ->push_back(curr->getLeftChild());
+    }
+    else{
+      printQ->push_back("0");
+    }
+    if(curr->getRightChild() != 0){
+      printQ->push_back(toString(curr->getRightChild()->getValue()));
+      nodeQ->push_back(curr->getRightChild());
+    }
+    else{
+      printQ->push_back("0");
+    }
+    nodeQ->pop_front();
+  }
+  delete nodeQ;
+  return printQ;
+}
+template <typename T>
 int BST<T>::getTreeDepth(Node<T>* n){
   if(n==0){
     return 0;
