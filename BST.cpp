@@ -36,9 +36,48 @@ void BST<T>::insert(T v) {
 
 template <typename T>
 void BST<T>::remove(T v) {
-  Node<T>* temp = root;
-  Node<T>* parent;
-
+  Node<T>** temp = &root;
+  //Find the Node
+  while(temp != 0 && (*temp)->getValue() != v) {
+    if(v < (*temp)->getValue()){
+      temp = &((*temp)->getLeftChild());
+    }
+    else{
+      temp = &((*temp)->getRightChild());
+    }
+  }
+  if(temp!= 0){
+    Node<T>* nodeToRemove = *temp;
+    //Leaf node
+    if(nodeToRemove->getLeftChild() == 0 && nodeToRemove->getRightChild() == 0){
+      delete nodeToRemove;
+      *temp = 0;
+    }
+    //No right child
+    else if(nodeToRemove->getRightChild() == 0){
+      *temp = nodeToRemove->getLeftChild();
+      delete nodeToRemove;
+    }
+    //No left child
+    else if(nodeToRemove->getLeftChild() == 0){
+      *temp = nodeToRemove->getRightChild();
+      delete nodeToRemove;
+    }
+    //Node has two children, use ios
+    else{
+      //right once
+      Node<T>* ios = nodeToRemove->getRightChild();
+      //then all the way left
+      while(ios->getLeftChild() != 0){
+        ios = ios->getLeftChild();
+      }
+      ios->setLeftChild(*(nodeToRemove->getLeftChild()));
+      *temp = nodeToRemove->getRightChild();
+      delete nodeToRemove;
+    }
+  }
+}
+/*
   //Find the Node
   while(temp != 0 && temp->getValue() != v){
     parent = temp;
@@ -122,7 +161,7 @@ void BST<T>::remove(T v) {
   delete temp;
   return;
 }
-
+*/
 template <typename T>
 void BST<T>::print() {
   traversalPrint(root);
