@@ -1,5 +1,12 @@
 #include "BST.h"
 #include <iostream>
+#include <sstream>
+#include <list>
+#include <math.h>
+
+using std::cout;
+using std::endl;
+using std::list;
 
 template <typename T>
 BST<T>::BST() {
@@ -77,94 +84,35 @@ void BST<T>::remove(T v) {
     }
   }
 }
-/*
-  //Find the Node
-  while(temp != 0 && temp->getValue() != v){
-    parent = temp;
-    if(v > temp->getRightChild()){
-      temp = temp->getRightChild();
-    }
-    else{
-      temp = temp->getLeftChild();
-    }
-  }
 
-//Node has two children:
-  if(temp->getLeftChild() != 0 && temp->getRightChild() != 0){
-    //Go right once, check for kids
-    Node<T>* curr = temp->getRightChild();
-    if(curr->getLeftChild == 0 && curr->getRightChild == 0){
-      temp = curr;
-      delete temp;
-      curr->getRightChild = NULL;
-    }
-    else{//if right child haz children, go all the way left.
-      if(temp->getRightChild()->getLeftChild != 0){
-        Node<T>* leftChild;
-        Node<T>* leftChildParent;
-        leftChildParent = temp->getRightChild();
-        leftChild = temp->getRightChild()->getLeftChild();
-        while(leftChildParent->getLeftChild() != 0){
-          leftChildParent = leftChild;
-          leftChild = leftChild->getLeftChild();
-        }
-//?????
-        temp->getValue() = leftChild->getValue();
-        delete leftChild;
-        leftChildParent->getLeftChild() = NULL;
-      }
-      else{
-        Node<T>* curr;
-        curr = temp->getRightChild();
-        temp->getValue() = curr->getValue();
-        temp->getRightChild() = curr->getRightChild();
-        delete temp;
-      }
-    }
-    return;    
-  }
-
-//Node has 1 child:
-  if(temp->getLeftChild()==0 && temp->getRightChild() != 0 || temp->getLeftChild() != 0 && temp->getRightChild()==0){
-    //No left child
-    if(temp->getLeftChild()==0 && temp->getRightChild()!=0){
-      if(parent->getLeftChild() == temp){
-        parent->getLeftChild() = temp->getRightChild();
-        delete temp;
-      }
-      else{
-        parent->getRightChild() = temp->getRightChild();
-        delete temp;
-      }
-    }
-  
-    else{ //No right child
-      if(parent->getLeftChild() == temp){
-        parent->getLeftChild() = temp->getLeftChild();
-        delete temp;
-      }
-      else{
-        parent->getRightChild() = temp->getLeftChild();
-        delete temp;
-      }
-    }
-    return;
-  }
-
-//Node is a leaf
-  if(parent->getLeftChild() == temp){
-    parent->getLeftChild() = NULL;
-  }
-  else{
-    parent->getRightChild() = NULL;
-  }
-  delete temp;
-  return;
-}
-*/
 template <typename T>
 void BST<T>::print() {
   traversalPrint(root);
+}
+
+template <typename T>
+int BST<T>::getTreeDepth(Node<T>* n){
+  if(n==0){
+    return 0;
+  }
+  else{
+    int leftDepth = getTreeDepth(n->getLeftChild());
+    int rightDepth = getTreeDepth(n->getRightChild());
+
+    if(leftDepth > rightDepth){
+      return leftDepth +1;
+    }
+    else{
+      return rightDepth +1;
+    }
+  }
+}
+
+template <typename T>
+string BST<T>::toString(T v){
+  std::stringstream ss;
+  ss << v;
+  return ss.str();
 }
 
 template <typename T>
