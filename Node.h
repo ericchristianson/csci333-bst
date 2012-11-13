@@ -7,6 +7,7 @@ class Node {
   T value;
   Node<T>* leftChild;
   Node<T>* rightChild;
+  int balance;
 
  public:
   Node<T>(T v);
@@ -17,5 +18,8 @@ class Node {
 
   Node<T>*& getRightChild();
   void setRightChild(Node<T>& n);
+
+  int getBalance();
+  void setBalance(int b);
 };
 #endif
